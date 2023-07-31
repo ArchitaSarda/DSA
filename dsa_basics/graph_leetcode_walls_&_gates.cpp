@@ -8,7 +8,7 @@ void check(vector<vector<int>> &maps, int i, int j, int m, int n, queue<pair<int
   {
     return;
   }
-  if (maps[i][j] < dist || maps[i][j] == INF)
+  if (maps[i][j] > dist)
   {
     maps[i][j] = dist + 1;
     q.push(make_pair(i, j));
@@ -31,6 +31,7 @@ vector<vector<int>> getDistance(vector<vector<int>> &maps)
       }
     }
   }
+  q.push(make_pair(-1, -1));
   int dist = 0;
   while (!q.empty())
   {
@@ -40,10 +41,21 @@ vector<vector<int>> getDistance(vector<vector<int>> &maps)
     int j = get<1>(curr);
 
     cout << i << j << "\n";
-    check(maps, i - 1, j, m, n, q, dist);
-    check(maps, i + 1, j, m, n, q, dist);
-    check(maps, i, j - 1, m, n, q, dist);
-    check(maps, i, j + 1, m, n, q, dist);
+    if (i == -1)
+    {
+      dist++;
+      if (!q.empty())
+      {
+        q.push({-1, -1});
+      }
+    }
+    else
+    {
+      check(maps, i - 1, j, m, n, q, dist);
+      check(maps, i + 1, j, m, n, q, dist);
+      check(maps, i, j - 1, m, n, q, dist);
+      check(maps, i, j + 1, m, n, q, dist);
+    }
   }
 
   return maps;
